@@ -9,25 +9,29 @@ Hoodie.extend(function (hoodie) {
   'use strict';
 
   hoodie.pubsub = {
-    subscribe: function (hoodieId, type) {
-      var message = {
-        hoodieId: hoodieId,
-        type: type
+    subscribe: function (userId, subject) {
+      var task = {
+        userId: userId,
+        subject: subject
       };
-      return hoodie.task('subscribe').start(message);
+      return hoodie.task('subscribe').start(task);
     },
 
-    unsubscribe: function (task) {
-      // var defer = window.jQuery.Deferred();
-      // return defer.promise();
+    unsubscribe: function (userId, subject) {
+      var task = {
+        userId: userId,
+        subject: subject
+      };
       return hoodie.task('unsubscribe').start(task);
     },
 
-    publish: function (task) {
-      // var defer = window.jQuery.Deferred();
-      // return defer.promise();
-      return hoodie.task('publish').start(task);
-    }
+    // publish: function (userId, type) {
+    //   var task = {
+    //     userId: userId,
+    //     type: type
+    //   };
+    //   return hoodie.task('publish').start(task);
+    // }
   }
 
 });
