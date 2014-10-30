@@ -1,0 +1,32 @@
+{
+  "name": "hoodie-plugin-pubsub",
+  "version": "0.1.0",
+  "description": "PubSub Hoodie plugin",
+  "main": "worker.js",
+  "dependencies": {
+    "async": "^0.9.0"
+  },
+  "devDependencies": {
+  },
+  "hoodie": {
+    "plugins": [
+    ]
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "maintainers": [
+    {
+      "name": "gabriel",
+      "email": "gabriel@goappes.com"
+    },
+    {
+      "name": "joao",
+      "email": "joao@goappes.com"
+    },
+    {
+      "name": "italo",
+      "email": "italo@goappes.com"
+    }
+  ]
+}

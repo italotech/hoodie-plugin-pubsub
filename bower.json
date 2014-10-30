@@ -1,0 +1,24 @@
+{
+  "name": "hoodie-plugin-pubsub",
+  "version": "0.1.0",
+  "description": "PubSub Hoodie plugin",
+  "keywords": [
+    "hoodie",
+    "plugin",
+    "pubsub"
+  ],
+  "license": "MIT",
+  "main": "hoodie.pubsub.js",
+  "ignore": [
+    "**/.*",
+    "karma.conf.js",
+    "node_modules",
+    "bower_components",
+    "test",
+    "package.json"
+  ],
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "jquery": "~2.1.1"
+  }
+}
