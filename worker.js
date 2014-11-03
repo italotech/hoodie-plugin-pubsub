@@ -16,31 +16,37 @@ module.exports = function (hoodie, callback) {
     var targetDbName = db;
 
     if (!task.userId || !subject) {
-      return hoodie.task.error(db, task, new Erro('Pls fil the paarams: userId and subject'));
+      return hoodie.task.error(db, task, 'Pls, fill the params: userId and subject');
     }
 
     try {
       PubSub.subscribe(subject, sourceDbName, targetDbName, function (err, req) {
-        if (err) return hoodie.task.error(db, task, err);
+        console.log(err && err.error)
+        if (err) return hoodie.task.error(db, task, err.error || err);
         hoodie.task.success(db, task);
       });
     } catch (err) {
-      hoodie.task.error(db, task, err);
+      hoodie.task.error(db, task, err.error || err);
     }
   });
 
   hoodie.task.on('unsubscribe:add', function (db, task) {
     var subject = task.subject;
-    var sourceDbName = 'user/' + task.source;
+    var sourceDbName = 'user/' + task.userId;
     var targetDbName = db;
+
+    if (!task.userId || !subject) {
+      return hoodie.task.error(db, task, 'Pls, fill the params: userId and subject');
+    }
 
     try {
       PubSub.unsubscribe(subject, sourceDbName, targetDbName, function (err, req) {
-        if (err) return hoodie.task.error(db, task, err);
+        console.log(err && err.error)
+        if (err) return hoodie.task.error(db, task, err.error || err);
         hoodie.task.success(db, task);
       });
     } catch (err) {
-      hoodie.task.error(db, task, err);
+      hoodie.task.error(db, task, err.error || err);
     }
   });
 
