@@ -7,6 +7,7 @@ var async = require('async');
 
 module.exports = function (hoodie, callback) {
   var PubSub = require('./lib/pubsub')(hoodie);
+  var Design = require('./lib/design')(hoodie);
 
   hoodie.task.on('subscribe:add', function (db, task) {
     var subject = task.subject;
@@ -47,13 +48,14 @@ module.exports = function (hoodie, callback) {
     // hoodie.task.error(db, task, err);
   });
 
-  // hoodie.account.on('change', function (_doc) {
-  //   if (_doc.roles && _doc.roles.indexOf('confirmed') >= 0) {
-  //     PubSub.ensureUserFilter(_doc.hoodieId, function (err, _doc) {
-  //       if (err) console.error('PubSub.ensureUserFilter:', err);
-  //     });
-  //   }
-  // });
+  hoodie.account.on('change', function (_doc) {
+    console.log(_doc.roles)
+    if (_doc.roles && _doc.roles.indexOf('confirmed') >= 0) {
+      Design.ensureUserFilter(_doc.hoodieId, function (err, _doc) {
+        if (err) console.error('PubSub.ensureUserFilter:', err);
+      });
+    }
+  });
 
   async.series([
     async.apply(PubSub.addDb),
