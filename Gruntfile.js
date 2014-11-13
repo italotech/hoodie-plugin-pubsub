@@ -256,4 +256,19 @@ module.exports = function (grunt) {
     'usemin'
   ]);
 
+  grunt.registerTask('test:serve', [
+    'env:test',
+    'shell:removeData',
+    'shell:removeEmails',
+    'shell:npmLink',
+    'shell:installPlugin',
+    'hoodie',
+    'continueOn',
+  ]);
+  grunt.registerTask('test:stop', [
+    'hoodie_stop',
+    'shell:npmUnlink',
+    'shell:removePlugin'
+  ]);
+
 };

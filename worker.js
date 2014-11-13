@@ -10,6 +10,7 @@
 var async = require('async');
 var _ = require('underscore');
 var PubSub = require('./lib/pubsub');
+var Network = require('./lib/network');
 var ExtendedDatabaseAPI = require('./lib/extended-database').ExtendedDatabaseAPI;
 
 /**
@@ -60,6 +61,53 @@ exports.userFilter = function (hoodie, db, callback) {
   })
 };
 
+
+/**
+ * PubSub addIndexSubscribers
+ */
+
+exports.addIndexSubscribers = function (hoodie, db, callback) {
+
+  var index = {
+        map: function (doc) {
+          if(doc.source) {
+            emit(doc.source, doc._id);
+          }
+        }
+      };
+
+  db.addIndex('by_subscribers', index, function (err, data) {
+    if (err) {
+      return callback(err);
+    }
+
+    return callback();
+  })
+};
+
+/**
+ * PubSub addIndexSubscribers
+ */
+
+exports.addIndexSubscriptions = function (hoodie, db, callback) {
+
+  var index = {
+        map: function (doc) {
+          if(doc.target) {
+            emit(doc.target, doc._id);
+          }
+        }
+      };
+
+  db.addIndex('by_subscriptions', index, function (err, data) {
+    if (err) {
+      return callback(err);
+    }
+
+    return callback();
+  })
+};
+
 /**
  * PubSub worker
  */
@@ -67,9 +115,13 @@ exports.userFilter = function (hoodie, db, callback) {
 module.exports = function (hoodie, callback) {
   var pluginDb = new ExtendedDatabaseAPI(hoodie, hoodie.database(exports.dbname));
   var pubSub = new PubSub(hoodie, pluginDb);
+  var network = new Network(hoodie, pluginDb);
 
   hoodie.task.on('subscribe:add', pubSub.subscribe);
   hoodie.task.on('unsubscribe:add', pubSub.unsubscribe);
+  hoodie.task.on('subscribers:add', network.subscribers);
+  hoodie.task.on('subscriptions:add', network.subscriptions);
+
   // hoodie.task.on('publish:add', pubSub.publish);
   hoodie.account.on('change', function (_doc) {
     if (_doc.roles && _doc.roles.indexOf('confirmed') >= 0) {
@@ -87,6 +139,8 @@ module.exports = function (hoodie, callback) {
 
   async.series([
     async.apply(exports.dbAdd, hoodie),
+    async.apply(exports.addIndexSubscribers, hoodie, pluginDb),
+    async.apply(exports.addIndexSubscriptions, hoodie, pluginDb),
   ],
   callback);
 };

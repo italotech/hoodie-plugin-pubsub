@@ -25,6 +25,20 @@ Hoodie.extend(function (hoodie) {
       return hoodie.task('unsubscribe').start(task);
     },
 
+    subscribers: function (userId) {
+      var task = {
+        userId: userId || hoodie.id()
+      }
+      return hoodie.task('subscribers').start(task);
+    },
+
+    subscriptions: function (userId) {
+      var task = {
+        userId: userId || hoodie.id()
+      }
+      return hoodie.task('subscriptions').start(task);
+    }
+
     // publish: function (userId, type) {
     //   var task = {
     //     userId: userId,
