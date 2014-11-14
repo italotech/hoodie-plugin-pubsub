@@ -46,7 +46,9 @@ suite('network', function () {
       hoodie.account.signOut()
         .fail(function () { done(); })
         .done(function(){
-          console.table(users);
+          if (!window.mochaPhantomJS) {
+            console.table(users);
+          }
           done();
       });
     })
