@@ -22,6 +22,9 @@ for cordova/phonegap users
 ```
 
 ## API
-### hoodie.subscribe(hoodieId, type)
-### hoodie.unsubscribe(hoodieId, type)
+### hoodie.pubsub.subscribe(hoodieId, type)
+### hoodie.pubsub.unsubscribe(hoodieId, type)
+### hoodie.pubsub.subscribers()
+### hoodie.pubsub.subscriptions()
 ### hoodie.publish() - WIP!
+### hoodie.subscribe(hoodieId, type)
