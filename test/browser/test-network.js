@@ -61,8 +61,8 @@ suite('network', function () {
       localStorage.clear();
       hoodie.account.signIn('Hommer', '123')
         .fail(function (err) {
+          done(err);
           assert.ok(false, err.message);
-          done();
         })
         .done(function () {
           done();
@@ -73,8 +73,8 @@ suite('network', function () {
       this.timeout(10000);
       hoodie.account.signIn('Hommer', '123')
         .fail(function (err) {
-          assert.ok(false, err.message);
           done();
+          assert.ok(false, err.message);
         })
         .done(function () {
           assert.equal(
@@ -90,12 +90,25 @@ suite('network', function () {
       this.timeout(10000);
       hoodie.pubsub.subscribe(_.find(users, { user: 'Bart' }).hoodieId, 'post')
         .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
-          done();
         })
         .then(function () {
-          assert.ok(true, 'follow with sucess');
           done();
+          assert.ok(true, 'follow with sucess');
+        });
+    });
+
+    test('hommer not should subscribe bart posts', function (done) {
+      this.timeout(10000);
+      hoodie.pubsub.subscribe(_.find(users, { user: 'Bart' }).hoodieId, 'post')
+        .fail(function (err) {
+          done();
+          assert.ok((err.message ==='You already subscribed.'), err.message);
+        })
+        .then(function () {
+          done();
+          assert.ok(false, 'should throw error [You already subscribed.] ');
         });
     });
 
@@ -103,8 +116,8 @@ suite('network', function () {
       this.timeout(10000);
       hoodie.pubsub.subscribe(_.find(users, { user: 'Margie' }).hoodieId, 'post')
         .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
-          done();
         })
         .then(function () {
           assert.ok(true, 'follow with sucess');
@@ -116,8 +129,8 @@ suite('network', function () {
       this.timeout(10000);
       hoodie.pubsub.subscribe(_.find(users, { user: 'Lisa' }).hoodieId, 'post')
         .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
-          done();
         })
         .then(function () {
           assert.ok(true, 'follow with sucess');
@@ -125,16 +138,15 @@ suite('network', function () {
         });
     });
 
-   test('hommer should show subscribers', function (done) {
+   test('hommer should show 3 subscribers', function (done) {
       this.timeout(10000);
       hoodie.pubsub.subscribers()
         .fail(function (err) {
+          done(err);
           assert.ok(false, err.message);
-          done();
         })
-        .then(function () {
-          console.log(arguments)
-          assert.ok(true, 'subscribers with sucess');
+        .then(function (task) {
+          assert.ok((task.subscribers.length === 3) , 'subscribers ' + task.subscribers.length + ' with sucess');
           done();
         });
     });
@@ -143,12 +155,11 @@ suite('network', function () {
       this.timeout(10000);
       hoodie.pubsub.subscriptions()
         .fail(function (err) {
+          done(err);
           assert.ok(false, err.message);
-          done();
         })
-        .then(function () {
-          console.log(arguments)
-          assert.ok(true, 'subscriptions with sucess');
+        .then(function (task) {
+          assert.ok((task.subscriptions.length === 0) , 'subscriptions ' + task.subscriptions.length + ' with sucess');
           done();
         });
     });
@@ -157,8 +168,8 @@ suite('network', function () {
       this.timeout(10000);
       hoodie.pubsub.unsubscribe(_.find(users, { user: 'Bart' }).hoodieId, 'post')
         .fail(function (err) {
+          done(err);
           assert.ok(false, err.message);
-          done();
         })
         .then(function () {
           assert.ok(true, 'follow with sucess');

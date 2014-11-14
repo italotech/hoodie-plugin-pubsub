@@ -70,8 +70,8 @@ exports.addIndexSubscribers = function (hoodie, db, callback) {
 
   var index = {
         map: function (doc) {
-          if(doc.source) {
-            emit(doc.source, doc._id);
+          if(doc.target) {
+            emit(doc.target, doc._id);
           }
         }
       };
@@ -93,8 +93,8 @@ exports.addIndexSubscriptions = function (hoodie, db, callback) {
 
   var index = {
         map: function (doc) {
-          if(doc.target) {
-            emit(doc.target, doc._id);
+          if(doc.source) {
+            emit(doc.source, doc._id);
           }
         }
       };
