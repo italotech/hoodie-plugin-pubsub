@@ -28,5 +28,4 @@ for cordova/phonegap users
 ### hoodie.pubsub.unsubscribe(hoodieId, type)
 ### hoodie.pubsub.subscribers()
 ### hoodie.pubsub.subscriptions()
-### hoodie.publish() - WIP!
-### hoodie.subscribe(hoodieId, type)
+
