@@ -1,6 +1,8 @@
 hoodie-plugin-pubsub
 ====================
 
+[![Build Status](https://travis-ci.org/goappes/hoodie-plugin-pubsub.svg?branch=master)](https://travis-ci.org/goappes/hoodie-plugin-pubsub)
+
 ## Dependencies
 ```shell
   hoodie install hoodie-plugin-pubsub
