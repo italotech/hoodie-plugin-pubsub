@@ -6,7 +6,7 @@
 /**
  * Dependencies
  */
-var PubSub = require('./lib/index');
+var PubSub = require('./lib');
 
 /**
  * PubSub worker
