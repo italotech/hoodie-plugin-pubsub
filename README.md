@@ -1,7 +1,7 @@
 hoodie-plugin-pubsub
 ====================
 
-[![Build Status](https://travis-ci.org/goappes/hoodie-plugin-pubsub.svg?branch=master)](https://travis-ci.org/goappes/hoodie-plugin-pubsub) [![Dependencies](https://david-dm.org/goappes/hoodie-plugin-pubsub.png)](https://david-dm.org/goappes/hoodie-plugin-pubsub)
+[![Build Status](https://travis-ci.org/goappes/hoodie-plugin-pubsub.svg?branch=master)](https://travis-ci.org/goappes/hoodie-plugin-pubsub) [![Dependencies](https://david-dm.org/goappes/hoodie-plugin-pubsub.png)](https://david-dm.org/goappes/hoodie-plugin-pubsub)[![devDependency Status](https://david-dm.org/goappes/hoodie-plugin-pubsub/dev-status.svg)](https://david-dm.org/goappes/hoodie-plugin-pubsub#info=devDependencies)
 
 ## Dependencies
 ```shell
