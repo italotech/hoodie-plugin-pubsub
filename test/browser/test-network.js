@@ -140,7 +140,7 @@ suite('network', function () {
         });
     });
 
-   test('hommer should show 3 subscribers', function (done) {
+   test('hommer should show 0 subscribers', function (done) {
       this.timeout(10000);
       hoodie.pubsub.subscribers()
         .fail(function (err) {
@@ -148,12 +148,12 @@ suite('network', function () {
           assert.ok(false, err.message);
         })
         .then(function (task) {
-          assert.ok((task.subscribers.length === 3) , 'subscribers ' + task.subscribers.length + ' with sucess');
+          assert.ok((task.subscribers.length === 0) , 'subscribers ' + task.subscribers.length + ' with sucess');
           done();
         });
     });
 
-   test('hommer should show subscriptions', function (done) {
+   test('hommer should show 3 subscriptions', function (done) {
       this.timeout(10000);
       hoodie.pubsub.subscriptions()
         .fail(function (err) {
@@ -161,7 +161,7 @@ suite('network', function () {
           assert.ok(false, err.message);
         })
         .then(function (task) {
-          assert.ok((task.subscriptions.length === 0) , 'subscriptions ' + task.subscriptions.length + ' with sucess');
+          assert.ok((task.subscriptions.length === 3) , 'subscriptions ' + task.subscriptions.length + ' with sucess');
           done();
         });
     });
