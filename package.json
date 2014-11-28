@@ -53,6 +53,10 @@
   "author": "GoAppes <apes@goappes.com>",
   "contributors": [
     {
+      "name": "GoAppes",
+      "email": "apes@goappes.com"
+    },
+    {
       "name": "Gabriel Mancini",
       "email": "gabriel@goappes.com"
     },
