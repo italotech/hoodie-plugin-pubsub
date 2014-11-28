@@ -48,19 +48,34 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/goappes/hoodie-plugin-pubsub"
+    "url": "git@github.com:goappes/hoodie-plugin-pubsub.git"
   },
-  "maintainers": [
+  "author": "GoAppes <apes@goappes.com>",
+  "contributors": [
     {
-      "name": "gabriel",
+      "name": "Gabriel Mancini",
       "email": "gabriel@goappes.com"
     },
     {
-      "name": "joao",
+      "name": "João Neto",
       "email": "joao@goappes.com"
     },
     {
-      "name": "italo",
+      "name": "Italo Amorim",
+      "email": "italo@goappes.com"
+    }
+  ],
+  "maintainers": [
+    {
+      "name": "Gabriel Mancini",
+      "email": "gabriel@goappes.com"
+    },
+    {
+      "name": "João Neto",
+      "email": "joao@goappes.com"
+    },
+    {
+      "name": "Italo Amorim",
       "email": "italo@goappes.com"
     }
   ]
