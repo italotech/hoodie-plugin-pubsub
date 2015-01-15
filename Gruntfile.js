@@ -95,8 +95,8 @@ module.exports = function (grunt) {
     jshint: {
       files: [
         'Gruntfile.js',
-        'hoodie.template.js',
-        'index.js',
+        'hoodie.pubsub.js',
+        'worker.js',
         'lib/*.js',
         'hooks/*.js'
       ],
@@ -257,6 +257,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('test:serve', [
+    'jshint',
     'env:test',
     'shell:removeData',
     'shell:removeEmails',

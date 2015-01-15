@@ -6,6 +6,9 @@
 </head>
 <body>
   <div id="mocha"></div>
+  <script>
+    window.debug='pubsub';
+  </script>
   <script src="jquery.min.js"></script>
   <script src="async.js"></script>
   <script src="lodash.js"></script>
@@ -18,6 +21,8 @@
     assert = chai.assert;
     hoodie = new Hoodie();
   </script>
+  <script src="fixtures.js"></script>
+  <script src="utils.js"></script>  
   <script src="test-network.js"></script>
   <script>
     if (window.mochaPhantomJS) {

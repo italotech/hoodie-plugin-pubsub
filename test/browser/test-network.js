@@ -1,60 +1,7 @@
 suite('network', function () {
+  this.timeout(15000);
 
-  var  users = [
-      {user: 'Hommer', password: '123'},
-      {user: 'Bart', password: '123'},
-      {user: 'Meg', password: '123'},
-      {user: 'Margie', password: '123'},
-      {user: 'Lisa', password: '123'},
-      {user: 'Milhouse', password: '123'},
-      {user: 'Moo', password: '123'},
-      {user: 'Krust', password: '123'},
-      {user: 'Lenny', password: '123'},
-      {user: 'Flanders', password: '123'},
-      {user: 'Burns', password: '123'},
-      {user: 'Abul', password: '123'},
-      {user: 'Nelson', password: '123'},
-      {user: 'Dog', password: '123'},
-      {user: 'Cat', password: '123'}
-    ]
-
-  function signin(u, done) {
-    hoodie.account.signIn(u.user, u.password)
-      .fail(function () { done(); })
-      .done(function () {
-        u.hoodieId = hoodie.id();
-        done();
-      })
-  }
-
-  function addUser(u, done) {
-    hoodie.account.signOut()
-      .fail(function () { done(); })
-      .done(function () {
-        hoodie.account.signUp(u.user, u.password)
-          .fail(function () { signin(u, done); })
-          .done(function () { signin(u, done); });
-    });
-  }
-
-  test('load fixture', function (done) {
-    this.timeout(50000);
-    // phantomjs seems to keep session data between runs,
-    // so clear before running tests
-    localStorage.clear();
-    async.each(users, addUser, function () {
-      hoodie.account.signOut()
-        .fail(function () { done(); })
-        .done(function(){
-          if (!window.mochaPhantomJS) {
-            console.table(users);
-          }
-          done();
-      });
-    })
-  });
-
-
+  suiteSetup(loadUsers);
   suite('network test', function () {
 
 
@@ -90,7 +37,7 @@ suite('network', function () {
 
     test('hommer showd subscribe bart posts', function (done) {
       this.timeout(10000);
-      hoodie.pubsub.subscribe(_.find(users, { user: 'Bart' }).hoodieId, 'post')
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'post')
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -103,7 +50,7 @@ suite('network', function () {
 
     test('hommer not should subscribe bart posts', function (done) {
       this.timeout(10000);
-      hoodie.pubsub.subscribe(_.find(users, { user: 'Bart' }).hoodieId, 'post')
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'post')
         .fail(function (err) {
           done();
           assert.ok((err.message ==='You already subscribed.'), err.message);
@@ -116,7 +63,7 @@ suite('network', function () {
 
     test('hommer showd subscribe marge posts', function (done) {
       this.timeout(10000);
-      hoodie.pubsub.subscribe(_.find(users, { user: 'Margie' }).hoodieId, 'post')
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Margie' }).hoodieId, 'post')
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -129,7 +76,7 @@ suite('network', function () {
 
     test('hommer showd subscribe lisa posts', function (done) {
       this.timeout(10000);
-      hoodie.pubsub.subscribe(_.find(users, { user: 'Lisa' }).hoodieId, 'post')
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Lisa' }).hoodieId, 'post')
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -168,7 +115,7 @@ suite('network', function () {
 
     test('hommer showd unsubscribe bart posts', function (done) {
       this.timeout(10000);
-      hoodie.pubsub.unsubscribe(_.find(users, { user: 'Bart' }).hoodieId, 'post')
+      hoodie.pubsub.unsubscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'post')
         .fail(function (err) {
           done(err);
           assert.ok(false, err.message);
