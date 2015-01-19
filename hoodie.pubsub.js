@@ -10,13 +10,15 @@ Hoodie.extend(function (hoodie) {
 
   hoodie.pubsub = {
 
-    
+
     subscribe: function (userId, subject) {
       var defer = window.jQuery.Deferred();
       defer.notify('subscribe', arguments, false);
       var task = {
-        userId: userId,
-        subject: subject
+        pubsub: {
+          userId: userId,
+          subject: subject
+        }
       };
       hoodie.task('subscribe').start(task)
         .then(defer.resolve)
@@ -28,8 +30,10 @@ Hoodie.extend(function (hoodie) {
       var defer = window.jQuery.Deferred();
       defer.notify('unsubscribe', arguments, false);
       var task = {
-        userId: userId,
-        subject: subject
+        pubsub: {
+          userId: userId,
+          subject: subject
+        }
       };
       hoodie.task('unsubscribe').start(task)
         .then(defer.resolve)
@@ -41,7 +45,9 @@ Hoodie.extend(function (hoodie) {
       var defer = window.jQuery.Deferred();
       defer.notify('subscribers', arguments, false);
       var task = {
-        userId: userId || hoodie.id()
+        pubsub: {
+          userId: userId || hoodie.id()
+        }
       };
       hoodie.task('subscribers').start(task)
         .then(defer.resolve)
@@ -53,7 +59,9 @@ Hoodie.extend(function (hoodie) {
       var defer = window.jQuery.Deferred();
       defer.notify('subscriptions', arguments, false);
       var task = {
-        userId: userId || hoodie.id()
+        pubsub: {
+          userId: userId || hoodie.id()
+        }
       };
       hoodie.task('subscriptions').start(task)
         .then(defer.resolve)
@@ -61,7 +69,7 @@ Hoodie.extend(function (hoodie) {
       return defer.promise();
     }
   };
-  
+
   // var debugPromisseGstart = function (text) {
   //   var defer = window.jQuery.Deferred();
   //   (window.debug === 'pubsub') && console.groupCollapsed(text);
@@ -86,7 +94,7 @@ Hoodie.extend(function (hoodie) {
       console.groupEnd();
     }
   }
-  
+
   if (window.debug === 'pubsub') {
     hoodie.task.on('start', function () {
       out('start', arguments[0], arguments[0].type);
