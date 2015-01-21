@@ -1,6 +1,6 @@
 {
   "name": "hoodie-plugin-pubsub",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "PubSub Hoodie plugin",
   "main": "worker.js",
   "dependencies": {
