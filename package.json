@@ -1,6 +1,6 @@
 {
   "name": "hoodie-plugin-pubsub",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "description": "PubSub Hoodie plugin",
   "main": "worker.js",
   "dependencies": {
@@ -45,6 +45,12 @@
     ],
     "hoodiejs": "node_modules/hoodie/src/hoodie.js"
   },
+  "keywords": [
+    "hoodie",
+    "pubsub",
+    "goappes",
+    "plugin"
+  ],
   "scripts": {
     "test": "grunt test"
   },
