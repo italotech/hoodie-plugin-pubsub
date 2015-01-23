@@ -22,8 +22,7 @@ module.exports = function (hoodie, callback) {
   hoodie.task.on('subscriptions:add', pubSub.subscriptions);
 
   // hoodie.task.on('publish:add', pubSub.publish);
-  hoodie.account.on('change', pubSub.addFilterEachUser);
-
+  hoodie.account.on('user:change', pubSub.addFilterEachUser);
   callback();
 
 };
