@@ -126,49 +126,116 @@ suite('network', function () {
         });
     });
 
-    // test('signIn', function (done) {
-    //   this.timeout(15000);
-    //   assert.ok(!hoodie.account.username, 'start logged out');
-    //   hoodie.account.signIn('testuser', 'password')
-    //     .fail(function (err) {
-    //       assert.ok(false, err.message);
-    //     })
-    //     .done(function () {
-    //       assert.equal(hoodie.account.username, 'testuser');
-    //       done();
-    //     })
-    // });
+    test('hommer showd subscribe lisa chat and only lisa must recive', function (done) {
+      this.timeout(15000);
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Cat' }).hoodieId, 'post', true)
+        .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
+          assert.ok(false, err.message);
+        })
+        .then(function () {
+          assert.ok(true, 'follow with sucess');
+          done();
+        });
+    });
 
-    // test('signOut', function (done) {
-    //   this.timeout(15000);
-    //   hoodie.account.signIn('testuser', 'password')
-    //     .then(function () {
-    //       return hoodie.account.signOut();
-    //     })
-    //     .fail(function (err) {
-    //       assert.ok(false, err.message);
-    //     })
-    //     .done(function () {
-    //       assert.ok(!hoodie.account.username, 'should be logged out');
-    //       done();
-    //     })
-    // });
+    test('hommer showd subscribe lisa chat and only lisa must recive', function (done) {
+      this.timeout(15000);
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Dog' }).hoodieId, 'post', true)
+        .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
+          assert.ok(false, err.message);
+        })
+        .then(function () {
+          assert.ok(true, 'follow with sucess');
+          done();
+        });
+    });
 
-    // test('signUp while logged in should fail', function (done) {
-    //   this.timeout(15000);
-    //   hoodie.account.signIn('testuser', 'password')
-    //     .then(function () {
-    //       return hoodie.account.signUp('testuser2', 'password');
-    //     })
-    //     .fail(function (err) {
-    //       assert.ok(true, 'signUp should fail');
-    //       done();
-    //     })
-    //     .done(function () {
-    //       assert.ok(false, 'signUp should not succeed');
-    //       done();
-    //     })
-    // });
+    test('Dog showd subscribe hommer', function (done) {
+      signinUser('dog', 123, function () {
+        hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Hommer' }).hoodieId, 'post', true)
+          .fail(function (err) {
+            done((err.message !=='You already subscribed.')? err: null);
+            assert.ok(false, err.message);
+          })
+          .then(function () {
+            assert.ok(true, 'follow with sucess');
+            done();
+          });
+      })
+    })
+
+    test('Lisa showd subscribe hommer', function (done) {
+      signinUser('lisa', 123, function () {
+        hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Hommer' }).hoodieId, 'post', true)
+          .fail(function (err) {
+            done((err.message !=='You already subscribed.')? err: null);
+            assert.ok(false, err.message);
+          })
+          .then(function () {
+            assert.ok(true, 'follow with sucess');
+            done();
+          });
+      })
+    })
+
+
+    test('hommer showd create a post document', function (done) {
+      this.timeout(15000);
+      signinUser('hommer', 123, function () {
+        hoodie.store.add('post', { text: 'my post doh!' } )
+          .fail(function (err) {
+            done((err.message !=='You already subscribed.')? err: null);
+            assert.ok(false, err.message);
+          })
+          .then(function () {
+            assert.ok(true, 'follow with sucess');
+            done();
+          });
+      });
+    });
+
+    test('hommer showd create a post document exclusive', function (done) {
+      this.timeout(15000);
+      hoodie.store.add('post', { text: 'au au au', exclusive:_.find(window.fixtures.users, { username: 'Dog' }).hoodieId } )
+        .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
+          assert.ok(false, err.message);
+        })
+        .then(function () {
+          assert.ok(true, 'follow with sucess');
+          done();
+        });
+    });
+
+    test('Lisa showd have the post from hommer', function (done) {
+      signinUser('lisa', 123, function () {
+        hoodie.store.findAll('post')
+          .then(function (docs) {
+            assert.ok(docs.length === 1, 'has a post from hommer');
+            done();
+          })
+          .fail(function (err) {
+            done((err.message !=='You already subscribed.')? err: null);
+            assert.ok(false, err.message);
+          });
+      })
+    })
+
+    test('Dog showd have the posts from hommer include the exclusive one', function (done) {
+      signinUser('dog', 123, function () {
+        hoodie.store.findAll('post')
+          .then(function (docs) {
+            assert.ok(docs.length === 2, 'has 2 posts from hommer');
+            done();
+          })
+          .fail(function (err) {
+            done((err.message !=='You already subscribed.')? err: null);
+            assert.ok(false, err.message);
+          });
+      })
+    })
 
   });
 

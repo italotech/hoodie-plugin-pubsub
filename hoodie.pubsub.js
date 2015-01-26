@@ -11,13 +11,14 @@ Hoodie.extend(function (hoodie) {
   hoodie.pubsub = {
 
 
-    subscribe: function (userId, subject) {
+    subscribe: function (userId, subject, /*optional*/ exclusive) {
       var defer = window.jQuery.Deferred();
       defer.notify('subscribe', arguments, false);
       var task = {
         pubsub: {
           userId: userId,
-          subject: subject
+          subject: subject,
+          exclusive: exclusive
         }
       };
       hoodie.task('subscribe').start(task)
