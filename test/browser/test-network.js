@@ -198,7 +198,7 @@ suite('network', function () {
 
     test('hommer showd create a post document exclusive', function (done) {
       this.timeout(15000);
-      hoodie.store.add('post', { text: 'au au au', exclusive:_.find(window.fixtures.users, { username: 'Dog' }).hoodieId } )
+      hoodie.store.add('post', { text: 'au au au', exclusive: [ _.find(window.fixtures.users, { username: 'Dog' }).hoodieId, hoodie.id() ] } )
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
