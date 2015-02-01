@@ -85,9 +85,9 @@ suite('two types', function () {
         });
     });
 
-    test('hommer showd bidirectional Lenny posts exclusive', function (done) {
+    test('hommer showd bidirectional Lenny posts', function (done) {
       this.timeout(15000);
-      hoodie.pubsub.bidirectional(_.find(window.fixtures.users, { username: 'Lenny' }).hoodieId, ['post', 'chat'], true)
+      hoodie.pubsub.bidirectional(_.find(window.fixtures.users, { username: 'Lenny' }).hoodieId, ['post', 'chat'])
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -150,7 +150,7 @@ suite('two types', function () {
         });
     });
 
-    test('hommer showd unbidirectional Lenny posts exclusive', function (done) {
+    test('hommer showd unbidirectional Lenny posts', function (done) {
       this.timeout(15000);
       hoodie.pubsub.unbidirectional(_.find(window.fixtures.users, { username: 'Lenny' }).hoodieId, ['post', 'chat'])
         .fail(function (err) {
@@ -235,7 +235,7 @@ suite('two types', function () {
 
     test('hommer showd create a post document exclusive', function (done) {
       this.timeout(15000);
-      hoodie.store.add('post', { text: 'au au au', exclusive: [ _.find(window.fixtures.users, { username: 'Dog' }).hoodieId, hoodie.id() ] } )
+      hoodie.store.add('post', { text: 'au au au', exclusive: [ _.find(window.fixtures.users, { username: 'Dog' }).hoodieId ] } )
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
