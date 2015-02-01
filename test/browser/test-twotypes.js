@@ -72,7 +72,33 @@ suite('two types', function () {
         });
     });
 
-   test('hommer should show 2 subscribers', function (done) {
+    test('hommer showd bidirectional Krust posts', function (done) {
+      this.timeout(15000);
+      hoodie.pubsub.bidirectional(_.find(window.fixtures.users, { username: 'Krust' }).hoodieId, ['post', 'chat'])
+        .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
+          assert.ok(false, err.message);
+        })
+        .then(function () {
+          assert.ok(true, 'follow with sucess');
+          done();
+        });
+    });
+
+    test('hommer showd bidirectional Lenny posts exclusive', function (done) {
+      this.timeout(15000);
+      hoodie.pubsub.bidirectional(_.find(window.fixtures.users, { username: 'Lenny' }).hoodieId, ['post', 'chat'], true)
+        .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
+          assert.ok(false, err.message);
+        })
+        .then(function () {
+          assert.ok(true, 'follow with sucess');
+          done();
+        });
+    });
+
+   test('hommer should show 6 subscribers', function (done) {
       this.timeout(15000);
       hoodie.pubsub.subscribers()
         .fail(function (err) {
@@ -80,12 +106,12 @@ suite('two types', function () {
           assert.ok(false, err.message);
         })
         .then(function (task) {
-          assert.ok((task.pubsub.subscribers.length === 2) , 'subscribers ' + task.pubsub.subscribers.length + ' with sucess');
+          assert.ok((task.pubsub.subscribers.length === 6) , 'subscribers ' + task.pubsub.subscribers.length + ' with sucess');
           done();
         });
     });
 
-   test('hommer should show 7 subscriptions', function (done) {
+   test('hommer should show 10 subscriptions', function (done) {
       this.timeout(15000);
       hoodie.pubsub.subscriptions()
         .fail(function (err) {
@@ -93,12 +119,12 @@ suite('two types', function () {
           assert.ok(false, err.message);
         })
         .then(function (task) {
-          assert.ok((task.pubsub.subscriptions.length === 7) , 'subscriptions ' + task.pubsub.subscriptions.length + ' with sucess');
+          assert.ok((task.pubsub.subscriptions.length === 10) , 'subscriptions ' + task.pubsub.subscriptions.length + ' with sucess');
           done();
         });
     });
 
-   test('hommer should show 3 subscriptions by type', function (done) {
+   test('hommer should show 5 subscriptions by type', function (done) {
       this.timeout(15000);
       hoodie.pubsub.subscriptionsByType(['post', 'chat'])
         .fail(function (err) {
@@ -106,7 +132,7 @@ suite('two types', function () {
           assert.ok(false, err.message);
         })
         .then(function (task) {
-          assert.ok((task.pubsub.subscriptions.length === 3) , 'subscriptions ' + task.pubsub.subscriptions.length + ' with sucess');
+          assert.ok((task.pubsub.subscriptions.length === 5) , 'subscriptions ' + task.pubsub.subscriptions.length + ' with sucess');
           done();
         });
     });
@@ -116,6 +142,19 @@ suite('two types', function () {
       hoodie.pubsub.unsubscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, ['post', 'chat'])
         .fail(function (err) {
           done(err);
+          assert.ok(false, err.message);
+        })
+        .then(function () {
+          assert.ok(true, 'follow with sucess');
+          done();
+        });
+    });
+
+    test('hommer showd unbidirectional Lenny posts exclusive', function (done) {
+      this.timeout(15000);
+      hoodie.pubsub.unbidirectional(_.find(window.fixtures.users, { username: 'Lenny' }).hoodieId, ['post', 'chat'])
+        .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
         })
         .then(function () {

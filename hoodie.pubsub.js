@@ -11,6 +11,39 @@ Hoodie.extend(function (hoodie) {
   hoodie.pubsub = {
 
 
+    bidirectional: function (userId, subject, /*optional*/ exclusive) {
+      var defer = window.jQuery.Deferred();
+      defer.notify('bidirectional', arguments, false);
+      var task = {
+        pubsub: {
+          userId: userId,
+          subject: [].concat(subject),
+          exclusive: exclusive
+        }
+      };
+      hoodie.task('pubsubbidirectional').start(task)
+        .then(defer.resolve)
+        .fail(defer.reject);
+      hoodie.remote.push();
+      return defer.promise();
+    },
+
+    unbidirectional: function (userId, subject) {
+      var defer = window.jQuery.Deferred();
+      defer.notify('unbidirectional', arguments, false);
+      var task = {
+        pubsub: {
+          userId: userId,
+          subject: [].concat(subject)
+        }
+      };
+      hoodie.task('pubsubunbidirectional').start(task)
+        .then(defer.resolve)
+        .fail(defer.reject);
+      hoodie.remote.push();
+      return defer.promise();
+    },
+
     subscribe: function (userId, subject, /*optional*/ exclusive) {
       var defer = window.jQuery.Deferred();
       defer.notify('subscribe', arguments, false);

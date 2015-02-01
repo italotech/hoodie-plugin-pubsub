@@ -72,7 +72,33 @@ suite('network', function () {
         });
     });
 
-   test('hommer should show 0 subscribers', function (done) {
+    test('hommer showd bidirectional Krust posts', function (done) {
+      this.timeout(15000);
+      hoodie.pubsub.bidirectional(_.find(window.fixtures.users, { username: 'Krust' }).hoodieId, 'singlepost')
+        .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
+          assert.ok(false, err.message);
+        })
+        .then(function () {
+          assert.ok(true, 'follow with sucess');
+          done();
+        });
+    });
+
+    test('hommer showd bidirectional Lenny posts exclusive', function (done) {
+      this.timeout(15000);
+      hoodie.pubsub.bidirectional(_.find(window.fixtures.users, { username: 'Lenny' }).hoodieId, 'singlepost', true)
+        .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
+          assert.ok(false, err.message);
+        })
+        .then(function () {
+          assert.ok(true, 'follow with sucess');
+          done();
+        });
+    });
+
+   test('hommer should show 2 subscribers', function (done) {
       this.timeout(15000);
       hoodie.pubsub.subscribers()
         .fail(function (err) {
@@ -80,12 +106,12 @@ suite('network', function () {
           assert.ok(false, err.message);
         })
         .then(function (task) {
-          assert.ok((task.pubsub.subscribers.length === 0) , 'subscribers ' + task.pubsub.subscribers.length + ' with sucess');
+          assert.ok((task.pubsub.subscribers.length === 2) , 'subscribers ' + task.pubsub.subscribers.length + ' with sucess');
           done();
         });
     });
 
-   test('hommer should show 3 subscriptions', function (done) {
+   test('hommer should show 5 subscriptions', function (done) {
       this.timeout(15000);
       hoodie.pubsub.subscriptions()
         .fail(function (err) {
@@ -93,7 +119,7 @@ suite('network', function () {
           assert.ok(false, err.message);
         })
         .then(function (task) {
-          assert.ok((task.pubsub.subscriptions.length === 3) , 'subscriptions ' + task.pubsub.subscriptions.length + ' with sucess');
+          assert.ok((task.pubsub.subscriptions.length === 5) , 'subscriptions ' + task.pubsub.subscriptions.length + ' with sucess');
           done();
         });
     });
@@ -104,6 +130,19 @@ suite('network', function () {
       hoodie.pubsub.unsubscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'singlepost')
         .fail(function (err) {
           done(err);
+          assert.ok(false, err.message);
+        })
+        .then(function () {
+          assert.ok(true, 'follow with sucess');
+          done();
+        });
+    });
+
+    test('hommer showd unbidirectional Lenny posts exclusive', function (done) {
+      this.timeout(15000);
+      hoodie.pubsub.unbidirectional(_.find(window.fixtures.users, { username: 'Lenny' }).hoodieId, 'singlepost')
+        .fail(function (err) {
+          done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
         })
         .then(function () {
