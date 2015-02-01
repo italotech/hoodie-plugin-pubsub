@@ -221,7 +221,7 @@ suite('two types', function () {
     test('hommer showd create a post document', function (done) {
       this.timeout(15000);
       signinUser('hommer', 123, function () {
-        hoodie.store.add('post', { text: 'my post doh!' } )
+        hoodie.store.add('post', { text: 'my post doh!',  userId: _.find(window.fixtures.users, { username: 'Hommer' }).hoodieId } )
           .fail(function (err) {
             done((err.message !=='You already subscribed.')? err: null);
             assert.ok(false, err.message);
@@ -235,7 +235,7 @@ suite('two types', function () {
 
     test('hommer showd create a post document exclusive', function (done) {
       this.timeout(15000);
-      hoodie.store.add('post', { text: 'au au au', exclusive: [ _.find(window.fixtures.users, { username: 'Dog' }).hoodieId ] } )
+      hoodie.store.add('post', { text: 'au au au',  userId: _.find(window.fixtures.users, { username: 'Hommer' }).hoodieId, exclusive: [ _.find(window.fixtures.users, { username: 'Dog' }).hoodieId ] } )
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -250,7 +250,7 @@ suite('two types', function () {
       signinUser('lisa', 123, function () {
         hoodie.store.findAll('post')
           .then(function (docs) {
-            assert.ok(docs.length === 1, 'has a post from hommer');
+            assert.ok(docs.length === 2, 'has a post from hommer');
             done();
           })
           .fail(function (err) {
