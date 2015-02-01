@@ -16,10 +16,10 @@ module.exports = function (hoodie, callback) {
 
   var pubSub = new PubSub(hoodie);
 
-  hoodie.task.on('subscribe:add', pubSub.subscribe);
-  hoodie.task.on('unsubscribe:add', pubSub.unsubscribe);
-  hoodie.task.on('subscribers:add', pubSub.subscribers);
-  hoodie.task.on('subscriptions:add', pubSub.subscriptions);
+  hoodie.task.on('pubsubsubscribe:add', pubSub.subscribe);
+  hoodie.task.on('pubsubunsubscribe:add', pubSub.unsubscribe);
+  hoodie.task.on('pubsubsubscribers:add', pubSub.subscribers);
+  hoodie.task.on('pubsubsubscriptions:add', pubSub.subscriptions);
 
   // hoodie.task.on('publish:add', pubSub.publish);
   hoodie.account.on('user:change', pubSub.addFilterEachUser);

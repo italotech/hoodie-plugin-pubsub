@@ -1,22 +1,7 @@
 suite('network', function () {
   this.timeout(15000);
 
-  suiteSetup(loadUsers);
   suite('network test', function () {
-
-
-    setup(function (done) {
-      this.timeout(15000);
-      localStorage.clear();
-      hoodie.account.signIn('Hommer', '123')
-        .fail(function (err) {
-          done(err);
-          assert.ok(false, err.message);
-        })
-        .done(function () {
-          done();
-        });
-    });
 
     test('signIn hommer', function (done) {
       this.timeout(15000);
@@ -37,7 +22,7 @@ suite('network', function () {
 
     test('hommer showd subscribe bart posts', function (done) {
       this.timeout(15000);
-      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'post')
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'singlepost')
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -50,7 +35,7 @@ suite('network', function () {
 
     test('hommer not should subscribe bart posts', function (done) {
       this.timeout(15000);
-      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'post')
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'singlepost')
         .fail(function (err) {
           done();
           assert.ok((err.message ==='You already subscribed.'), err.message);
@@ -63,7 +48,7 @@ suite('network', function () {
 
     test('hommer showd subscribe marge posts', function (done) {
       this.timeout(15000);
-      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Margie' }).hoodieId, 'post')
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Margie' }).hoodieId, 'singlepost')
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -76,7 +61,7 @@ suite('network', function () {
 
     test('hommer showd subscribe lisa posts', function (done) {
       this.timeout(15000);
-      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Lisa' }).hoodieId, 'post')
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Lisa' }).hoodieId, 'singlepost')
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -113,9 +98,10 @@ suite('network', function () {
         });
     });
 
+
     test('hommer showd unsubscribe bart posts', function (done) {
       this.timeout(15000);
-      hoodie.pubsub.unsubscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'post')
+      hoodie.pubsub.unsubscribe(_.find(window.fixtures.users, { username: 'Bart' }).hoodieId, 'singlepost')
         .fail(function (err) {
           done(err);
           assert.ok(false, err.message);
@@ -126,9 +112,9 @@ suite('network', function () {
         });
     });
 
-    test('hommer showd subscribe lisa chat and only lisa must recive', function (done) {
+    test('hommer showd subscribe Cat chat and only lisa must recive', function (done) {
       this.timeout(15000);
-      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Cat' }).hoodieId, 'post', true)
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Cat' }).hoodieId, 'singlepost', true)
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -139,9 +125,9 @@ suite('network', function () {
         });
     });
 
-    test('hommer showd subscribe lisa chat and only lisa must recive', function (done) {
+    test('hommer showd subscribe Dog chat and only lisa must recive', function (done) {
       this.timeout(15000);
-      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Dog' }).hoodieId, 'post', true)
+      hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Dog' }).hoodieId, 'singlepost', true)
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -154,7 +140,7 @@ suite('network', function () {
 
     test('Dog showd subscribe hommer', function (done) {
       signinUser('dog', 123, function () {
-        hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Hommer' }).hoodieId, 'post', true)
+        hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Hommer' }).hoodieId, 'singlepost', true)
           .fail(function (err) {
             done((err.message !=='You already subscribed.')? err: null);
             assert.ok(false, err.message);
@@ -168,10 +154,10 @@ suite('network', function () {
 
     test('Lisa showd subscribe hommer', function (done) {
       signinUser('lisa', 123, function () {
-        hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Hommer' }).hoodieId, 'post', true)
+        hoodie.pubsub.subscribe(_.find(window.fixtures.users, { username: 'Hommer' }).hoodieId, 'singlepost', true)
           .fail(function (err) {
-            done((err.message !=='You already subscribed.')? err: null);
             assert.ok(false, err.message);
+            done(err);
           })
           .then(function () {
             assert.ok(true, 'follow with sucess');
@@ -184,7 +170,7 @@ suite('network', function () {
     test('hommer showd create a post document', function (done) {
       this.timeout(15000);
       signinUser('hommer', 123, function () {
-        hoodie.store.add('post', { text: 'my post doh!' } )
+        hoodie.store.add('singlepost', { text: 'my post doh!' } )
           .fail(function (err) {
             done((err.message !=='You already subscribed.')? err: null);
             assert.ok(false, err.message);
@@ -198,7 +184,7 @@ suite('network', function () {
 
     test('hommer showd create a post document exclusive', function (done) {
       this.timeout(15000);
-      hoodie.store.add('post', { text: 'au au au', exclusive: [ _.find(window.fixtures.users, { username: 'Dog' }).hoodieId, hoodie.id() ] } )
+      hoodie.store.add('singlepost', { text: 'au au au', exclusive: [ _.find(window.fixtures.users, { username: 'Dog' }).hoodieId, hoodie.id() ] } )
         .fail(function (err) {
           done((err.message !=='You already subscribed.')? err: null);
           assert.ok(false, err.message);
@@ -211,7 +197,7 @@ suite('network', function () {
 
     test('Lisa showd have the post from hommer', function (done) {
       signinUser('lisa', 123, function () {
-        hoodie.store.findAll('post')
+        hoodie.store.findAll('singlepost')
           .then(function (docs) {
             assert.ok(docs.length === 1, 'has a post from hommer');
             done();
@@ -225,7 +211,7 @@ suite('network', function () {
 
     test('Dog showd have the posts from hommer include the exclusive one', function (done) {
       signinUser('dog', 123, function () {
-        hoodie.store.findAll('post')
+        hoodie.store.findAll('singlepost')
           .then(function (docs) {
             assert.ok(docs.length === 2, 'has 2 posts from hommer');
             done();

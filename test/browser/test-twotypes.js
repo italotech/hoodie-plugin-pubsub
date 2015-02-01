@@ -1,22 +1,7 @@
 suite('two types', function () {
   this.timeout(15000);
 
-  suiteSetup(loadUsers);
   suite('two types test', function () {
-
-
-    setup(function (done) {
-      this.timeout(15000);
-      localStorage.clear();
-      hoodie.account.signIn('Hommer', '123')
-        .fail(function (err) {
-          done(err);
-          assert.ok(false, err.message);
-        })
-        .done(function () {
-          done();
-        });
-    });
 
     test('signIn hommer', function (done) {
       this.timeout(15000);
@@ -87,7 +72,7 @@ suite('two types', function () {
         });
     });
 
-   test('hommer should show 0 subscribers', function (done) {
+   test('hommer should show 2 subscribers', function (done) {
       this.timeout(15000);
       hoodie.pubsub.subscribers()
         .fail(function (err) {
@@ -95,14 +80,27 @@ suite('two types', function () {
           assert.ok(false, err.message);
         })
         .then(function (task) {
-          assert.ok((task.pubsub.subscribers.length === 0) , 'subscribers ' + task.pubsub.subscribers.length + ' with sucess');
+          assert.ok((task.pubsub.subscribers.length === 2) , 'subscribers ' + task.pubsub.subscribers.length + ' with sucess');
           done();
         });
     });
 
-   test('hommer should show 3 subscriptions', function (done) {
+   test('hommer should show 7 subscriptions', function (done) {
       this.timeout(15000);
       hoodie.pubsub.subscriptions()
+        .fail(function (err) {
+          done(err);
+          assert.ok(false, err.message);
+        })
+        .then(function (task) {
+          assert.ok((task.pubsub.subscriptions.length === 7) , 'subscriptions ' + task.pubsub.subscriptions.length + ' with sucess');
+          done();
+        });
+    });
+
+   test('hommer should show 3 subscriptions by type', function (done) {
+      this.timeout(15000);
+      hoodie.pubsub.subscriptionsByType(['post', 'chat'])
         .fail(function (err) {
           done(err);
           assert.ok(false, err.message);

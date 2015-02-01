@@ -17,13 +17,14 @@ Hoodie.extend(function (hoodie) {
       var task = {
         pubsub: {
           userId: userId,
-          subject: subject,
+          subject: [].concat(subject),
           exclusive: exclusive
         }
       };
-      hoodie.task('subscribe').start(task)
+      hoodie.task('pubsubsubscribe').start(task)
         .then(defer.resolve)
         .fail(defer.reject);
+      hoodie.remote.push();
       return defer.promise();
     },
 
@@ -33,12 +34,13 @@ Hoodie.extend(function (hoodie) {
       var task = {
         pubsub: {
           userId: userId,
-          subject: subject
+          subject: [].concat(subject)
         }
       };
-      hoodie.task('unsubscribe').start(task)
+      hoodie.task('pubsubunsubscribe').start(task)
         .then(defer.resolve)
         .fail(defer.reject);
+      hoodie.remote.push();
       return defer.promise();
     },
 
@@ -50,9 +52,10 @@ Hoodie.extend(function (hoodie) {
           userId: userId || hoodie.id()
         }
       };
-      hoodie.task('subscribers').start(task)
+      hoodie.task('pubsubsubscribers').start(task)
         .then(defer.resolve)
         .fail(defer.reject);
+      hoodie.remote.push();
       return defer.promise();
     },
 
@@ -64,9 +67,42 @@ Hoodie.extend(function (hoodie) {
           userId: userId || hoodie.id()
         }
       };
-      hoodie.task('subscriptions').start(task)
+      hoodie.task('pubsubsubscriptions').start(task)
         .then(defer.resolve)
         .fail(defer.reject);
+      hoodie.remote.push();
+      return defer.promise();
+    },
+
+    subscribersByType: function (type, userId) {
+      var defer = window.jQuery.Deferred();
+      defer.notify('subscribersByType', arguments, false);
+      var task = {
+        pubsub: {
+          userId: userId || hoodie.id(),
+          type: [].concat(type)
+        }
+      };
+      hoodie.task('pubsubsubscribers').start(task)
+        .then(defer.resolve)
+        .fail(defer.reject);
+      hoodie.remote.push();
+      return defer.promise();
+    },
+
+    subscriptionsByType: function (type, userId) {
+      var defer = window.jQuery.Deferred();
+      defer.notify('subscriptionsByType', arguments, false);
+      var task = {
+        pubsub: {
+          userId: userId || hoodie.id(),
+          type: [].concat(type)
+        }
+      };
+      hoodie.task('pubsubsubscriptions').start(task)
+        .then(defer.resolve)
+        .fail(defer.reject);
+      hoodie.remote.push();
       return defer.promise();
     }
   };
